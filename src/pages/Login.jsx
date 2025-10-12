@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { signIn } from "../services/auth";
 
 function Login({ setUsuario }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cargando, setCargando] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setCargando(true);
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-    const usuarioValido = usuarios.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (usuarioValido) {
-      toast.success(`Bienvenido ${usuarioValido.nombre}`);
-      setUsuario(usuarioValido);
-      setEmail('');
-      setPassword('');
-    } else {
-      toast.error('Email o contraseña incorrectos');
+    try {
+      const usuario = await signIn(email, password);
+      toast.success(`Bienvenido ${usuario.nombre}`);
+      setUsuario(usuario);
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      toast.error("Email o contraseña incorrectos");
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -33,14 +33,18 @@ function Login({ setUsuario }) {
           placeholder="Correo"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit" disabled={cargando}>
+          {cargando ? "Ingresando..." : "Iniciar sesión"}
+        </button>
       </form>
     </main>
   );

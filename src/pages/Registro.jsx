@@ -1,40 +1,49 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-function Registro() {
-  const [nombre, setNombre] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function Registro() {
+  const [form, setForm] = useState({
+    nombre: '',
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const validarEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleRegistro = (e) => {
     e.preventDefault();
+
+    const { nombre, email, password } = form;
 
     if (!nombre || !email || !password) {
       toast.error('Todos los campos son obligatorios');
       return;
     }
 
-    // Obtener usuarios existentes de localStorage
+    if (!validarEmail(email)) {
+      toast.error('Correo inválido');
+      return;
+    }
+
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
-    // Verificar si el email ya existe
-    const existe = usuarios.find((u) => u.email === email);
-    if (existe) {
+    if (usuarios.some((u) => u.email === email)) {
       toast.error('Este correo ya está registrado');
       return;
     }
 
-    // Agregar nuevo usuario
-    usuarios.push({ nombre, email, password });
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    const nuevoUsuario = { nombre, email, password };
+    localStorage.setItem('usuarios', JSON.stringify([...usuarios, nuevoUsuario]));
 
-    // Mensaje de éxito
     toast.success('Registro exitoso');
 
-    // Limpiar formulario
-    setNombre('');
-    setEmail('');
-    setPassword('');
+    setForm({ nombre: '', email: '', password: '' });
   };
 
   return (
@@ -43,26 +52,27 @@ function Registro() {
       <form onSubmit={handleRegistro}>
         <input
           type="text"
+          name="nombre"
           placeholder="Nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          value={form.nombre}
+          onChange={handleChange}
         />
         <input
           type="email"
+          name="email"
           placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={form.email}
+          onChange={handleChange}
         />
         <input
           type="password"
+          name="password"
           placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={form.password}
+          onChange={handleChange}
         />
         <button type="submit">Registrarse</button>
       </form>
     </main>
   );
 }
-
-export default Registro;

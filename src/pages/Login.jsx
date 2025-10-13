@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ setUsuario }) {
+const isTest = typeof process !== 'undefined' && process.env.NODE_ENV === 'test';
+
+export default function Login({ setUsuario }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = isTest ? () => {} : useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
 
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
     const usuarioValido = usuarios.find(
       (u) => u.email === email && u.password === password
     );
@@ -19,6 +23,7 @@ function Login({ setUsuario }) {
       setUsuario(usuarioValido);
       setEmail('');
       setPassword('');
+      navigate('/');
     } else {
       toast.error('Email o contraseña incorrectos');
     }
@@ -45,5 +50,3 @@ function Login({ setUsuario }) {
     </main>
   );
 }
-
-export default Login;

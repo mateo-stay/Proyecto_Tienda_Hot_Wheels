@@ -1,33 +1,25 @@
-import { Link, Outlet } from "react-router-dom";
-import { toast } from "react-toastify";
-import { signOut } from "../services/auth"; // 👈 Importa la función del servicio
-import "../App.scss";
+import { Link, Outlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import '../App.scss';
 
 function Layout({ carrito, usuario, setUsuario }) {
-  const cerrarSesion = async () => {
-    await signOut(); // 👈 Limpia localStorage o token
+
+  const cerrarSesion = () => {
     setUsuario(null);
-    toast.info("Sesión cerrada correctamente 👋");
+    toast.info('Sesión cerrada');
   };
 
   return (
-    <div className="layout-container">
+    <div>
       <header>
-        <h1>🔥 Hot Wheels Store</h1>
-
+        <h1>Hot Wheels Store</h1>
         <nav className="navbar">
           <div className="nav-left">
-            <Link to="/">Inicio</Link>
             <Link to="/">Productos</Link>
-
             {usuario ? (
               <div className="usuario-info">
-                <span className="nombre-usuario">
-                  👋 {usuario.nombre}
-                </span>
-                <button className="btn-cerrar" onClick={cerrarSesion}>
-                  Cerrar sesión
-                </button>
+                <span>{usuario.nombre}</span>
+                <button className="btn-cerrar" onClick={cerrarSesion}>Cerrar sesión</button>
               </div>
             ) : (
               <>
@@ -36,19 +28,16 @@ function Layout({ carrito, usuario, setUsuario }) {
               </>
             )}
           </div>
-
           <div className="nav-right">
-            <Link to="/carrito">🛒 Carrito ({carrito.length})</Link>
+            <Link to="/carrito">Carrito ({carrito.length})</Link>
           </div>
         </nav>
       </header>
 
-      <main>
-        <Outlet />
-      </main>
+      <Outlet />
 
       <footer>
-        <p>© 2025 Hot Wheels Store — Proyecto DuocUC</p>
+        <p>&copy; 2025 Hot Wheels Store - Proyecto DuocUC</p>
       </footer>
     </div>
   );

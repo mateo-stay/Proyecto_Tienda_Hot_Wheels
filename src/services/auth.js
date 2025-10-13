@@ -1,22 +1,11 @@
-export function signIn(email, password) {
+export function signIn(username, password) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (password === "password1234") {
-        const user = { nombre: "Usuario Demo", email, token: "sadjsagdhsgdsadsdjksagd" };
-        localStorage.setItem("usuario", JSON.stringify(user));
-        resolve(user);
+        resolve({ username: username, token: "sadjsagdhsgdsadsdjksagd" });
       } else {
         reject(new Error("Credenciales inválidas"));
       }
     }, 1000);
-  });
-}
-
-export function signOut() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      localStorage.removeItem("usuario");
-      resolve();
-    }, 500);
   });
 }

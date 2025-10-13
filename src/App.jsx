@@ -54,7 +54,6 @@ function App() {
     <main>
       <section id="bienvenida">
         <h2>Bienvenido a la Tienda Oficial Hot Wheels</h2>
-        {usuario && <p>{usuario.nombre}</p>}
       </section>
       <section id="productos">
         <h2>Modelos Destacados</h2>

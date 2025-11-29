@@ -1,7 +1,8 @@
+// src/pages/Login.jsx
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "../services/auth";
+import { signIn, clearAuth } from "../services/auth";
 
 const isTest = typeof process !== "undefined" && process.env.NODE_ENV === "test";
 
@@ -15,13 +16,14 @@ export default function Login({ setUsuario = () => {} }) {
     e.preventDefault();
 
     try {
-      await signIn(email, password);
+      // llama a la API, guarda token y usuario en localStorage
+      const { usuario } = await signIn(email, password);
 
       toast.success("Bienvenido 👋");
 
       if (typeof setUsuario === "function") {
-      // @ts-ignore
-      setUsuario({ email });
+        // usuario = { email, rol }
+        setUsuario(usuario);
       }
 
       setEmail("");
@@ -29,6 +31,8 @@ export default function Login({ setUsuario = () => {} }) {
 
       if (!isTest) navigate("/");
     } catch (err) {
+      console.error(err);
+      clearAuth();
       toast.error("Email o contraseña incorrectos");
     }
   };

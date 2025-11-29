@@ -1,12 +1,12 @@
-import { Link, Outlet } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import '../App.scss';
+// src/layouts/Layout.jsx
+import { Link, Outlet } from "react-router-dom";
+import { toast } from "react-toastify";
+import "../App.scss";
 
 function Layout({ carrito, usuario, setUsuario }) {
-
   const cerrarSesion = () => {
     setUsuario(null);
-    toast.info('Sesión cerrada');
+    toast.info("Sesión cerrada");
   };
 
   return (
@@ -16,10 +16,16 @@ function Layout({ carrito, usuario, setUsuario }) {
         <nav className="navbar">
           <div className="nav-left">
             <Link to="/">Productos</Link>
+            <Link to="/blogs">Blogs</Link>
+            <Link to="/contacto">Contacto</Link>
+            <Link to="/nosotros">Nosotros</Link>
+
             {usuario ? (
               <div className="usuario-info">
                 <span>{usuario.nombre}</span>
-                <button className="btn-cerrar" onClick={cerrarSesion}>Cerrar sesión</button>
+                <button className="btn-cerrar" onClick={cerrarSesion}>
+                  Cerrar sesión
+                </button>
               </div>
             ) : (
               <>
@@ -28,8 +34,11 @@ function Layout({ carrito, usuario, setUsuario }) {
               </>
             )}
           </div>
+
           <div className="nav-right">
             <Link to="/carrito">Carrito ({carrito.length})</Link>
+            {/* si quieres mostrar admin en el menú: */}
+            {/* <Link to="/admin">Admin</Link> */}
           </div>
         </nav>
       </header>

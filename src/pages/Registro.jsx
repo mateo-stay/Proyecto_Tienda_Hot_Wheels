@@ -1,49 +1,52 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+// src/pages/Registro.jsx
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { registrarUsuario } from "../services/api";
 
 export default function Registro() {
   const [form, setForm] = useState({
-    nombre: '',
-    email: '',
-    password: '',
+    nombre: "",
+    email: "",
+    password: "",
   });
+
+  const [cargando, setCargando] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const validarEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  const validarEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleRegistro = (e) => {
+  const handleRegistro = async (e) => {
     e.preventDefault();
 
     const { nombre, email, password } = form;
 
     if (!nombre || !email || !password) {
-      toast.error('Todos los campos son obligatorios');
+      toast.error("Todos los campos son obligatorios");
       return;
     }
 
     if (!validarEmail(email)) {
-      toast.error('Correo inválido');
+      toast.error("Correo inválido");
       return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    try {
+      setCargando(true);
 
-    if (usuarios.some((u) => u.email === email)) {
-      toast.error('Este correo ya está registrado');
-      return;
+      await registrarUsuario({ nombre, email, password });
+
+      toast.success("Registro exitoso");
+      setForm({ nombre: "", email: "", password: "" });
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Error al registrar usuario");
+    } finally {
+      setCargando(false);
     }
-
-    const nuevoUsuario = { nombre, email, password };
-    localStorage.setItem('usuarios', JSON.stringify([...usuarios, nuevoUsuario]));
-
-    toast.success('Registro exitoso');
-
-    setForm({ nombre: '', email: '', password: '' });
   };
 
   return (
@@ -56,6 +59,7 @@ export default function Registro() {
           placeholder="Nombre"
           value={form.nombre}
           onChange={handleChange}
+          disabled={cargando}
         />
         <input
           type="email"
@@ -63,6 +67,7 @@ export default function Registro() {
           placeholder="Correo"
           value={form.email}
           onChange={handleChange}
+          disabled={cargando}
         />
         <input
           type="password"
@@ -70,8 +75,11 @@ export default function Registro() {
           placeholder="Contraseña"
           value={form.password}
           onChange={handleChange}
+          disabled={cargando}
         />
-        <button type="submit">Registrarse</button>
+        <button type="submit" disabled={cargando}>
+          {cargando ? "Registrando..." : "Registrarse"}
+        </button>
       </form>
     </main>
   );

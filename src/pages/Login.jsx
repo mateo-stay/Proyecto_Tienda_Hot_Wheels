@@ -6,7 +6,7 @@ import { signIn, clearAuth } from "../services/auth";
 
 const isTest = typeof process !== "undefined" && process.env.NODE_ENV === "test";
 
-export default function Login({ setUsuario = () => {} }) {
+export default function Login({ setUsuario }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,11 +18,12 @@ export default function Login({ setUsuario = () => {} }) {
     try {
       // llama a la API, guarda token y usuario en localStorage
       const { usuario } = await signIn(email, password);
+      // usuario viene algo como: { email, rol, nombre }
 
       toast.success("Bienvenido 👋");
 
+      // ✅ Solo lo usamos si realmente vino desde App
       if (typeof setUsuario === "function") {
-        // usuario = { email, rol }
         setUsuario(usuario);
       }
 

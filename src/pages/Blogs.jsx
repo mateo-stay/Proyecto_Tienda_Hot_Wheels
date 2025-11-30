@@ -1,38 +1,52 @@
-// src/pages/Blogs.jsx
 import React from "react";
 
 export default function Blogs() {
   return (
-    <main>
-      <h2>Blogs</h2>
-      <p className="p-text">
-        Noticias, tips y consejos para que tu colección Hot Wheels se vea brutal.
-      </p>
+    <main className="blogs-page">
+
+      <section className="blogs-hero">
+        <div className="blogs-hero-text">
+          <h2>Blog Hot Wheels Store</h2>
+          <p className="p-text">
+            Tips rápidos, ideas y noticias para llevar tu colección al siguiente nivel.
+          </p>
+        </div>
+      </section>
 
       <section className="blogs-lista productos-container">
-        <article className="card">
+        <article className="card blog-card">
+          <div className="blog-meta">
+            <span className="blog-tag">Guía</span>
+          </div>
           <h3>Cómo iniciar tu colección Hot Wheels</h3>
           <p>
-            Elige una línea que te guste (JDM, clásicos, racing) y comienza con
-            pocos modelos bien seleccionados. Prioriza calidad por sobre cantidad
-            y aprovecha las ediciones especiales.
+            Parte eligiendo una temática que te guste (JDM, clásicos, racing) y
+            compra pocos modelos bien seleccionados. Prioriza calidad por sobre
+            cantidad y aprovecha las ediciones especiales cuando aparezcan.
           </p>
         </article>
 
-        <article className="card">
+        <article className="card blog-card">
+          <div className="blog-meta">
+            <span className="blog-tag">Cuidados</span>
+          </div>
           <h3>Consejos para cuidar tus autos a escala</h3>
           <p>
-            Evita la humedad y el sol directo, guárdalos en vitrinas o cajas y
-            limpia el polvo suavemente. Así mantienes la pintura y los detalles
-            como nuevos.
+            Mantén tus autos lejos de la humedad y del sol directo. Usa vitrinas,
+            cajas organizadoras y una limpieza suave para que la pintura y los
+            detalles se mantengan como nuevos por más tiempo.
           </p>
         </article>
 
-        <article className="card">
+        <article className="card blog-card">
+          <div className="blog-meta">
+            <span className="blog-tag">Colección</span>
+          </div>
           <h3>Dónde encontrar los mejores modelos</h3>
           <p>
-            Revisa tiendas especializadas, ferias de coleccionistas y lanzamientos
-            en retail. Sigue páginas de comunidad para no perderte las novedades.
+            Combina retail, tiendas especializadas, ferias de coleccionistas y
+            grupos en redes sociales. Así aumentas tus posibilidades de conseguir
+            piezas raras y lanzamientos limitados.
           </p>
         </article>
       </section>

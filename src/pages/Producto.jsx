@@ -7,17 +7,30 @@ export default function Producto({
   error,
   agregarAlCarrito,
 }) {
+  const cantidad = Array.isArray(productos) ? productos.length : 0;
+
   return (
     <main>
       <section id="bienvenida">
         <h2>Catálogo completo Hot Wheels</h2>
         <p className="p-text">
-          Elige tus modelos favoritos y añádelos al carrito para completar tu colección.
+          Elige tus modelos favoritos y añádelos al carrito para completar tu
+          colección.
         </p>
       </section>
 
       <section id="productos">
-        <h2>Todos los modelos disponibles</h2>
+        <div className="productos-header">
+          <h2>Todos los modelos disponibles</h2>
+
+          <p className="productos-resumen">
+            {loading
+              ? "Cargando catálogo..."
+              : cantidad === 0
+              ? "Por ahora no hay modelos registrados."
+              : `${cantidad} modelo${cantidad > 1 ? "s" : ""} disponibles`}
+          </p>
+        </div>
 
         {loading && <p>Cargando productos...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
@@ -25,7 +38,7 @@ export default function Producto({
         {!loading && !error && (
           <div className="productos-container">
             {/* Si no hay productos */}
-            {Array.isArray(productos) && productos.length === 0 && (
+            {cantidad === 0 && (
               <p>No hay productos registrados en la tienda.</p>
             )}
 
@@ -39,10 +52,18 @@ export default function Producto({
                 }).format(p.precio ?? 0);
 
                 return (
-                  <div className="card" key={p.id}>
-                    <img src={p.imagen_url} alt={p.nombre} />
+                  <div className="card producto-card" key={p.id}>
+                    <div className="producto-img-wrapper">
+                      <img src={p.imagen_url} alt={p.nombre} />
+                    </div>
+
+                    {p.categoria && (
+                      <p className="producto-categoria">{p.categoria}</p>
+                    )}
+
                     <h3>{p.nombre}</h3>
                     <p className="precio">{precioFormateado}</p>
+
                     <button
                       onClick={() => agregarAlCarrito(p.nombre, p.precio)}
                     >

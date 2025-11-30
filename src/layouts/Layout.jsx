@@ -1,19 +1,25 @@
 // src/layouts/Layout.jsx
 import { Link, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
+import { clearAuth } from "../services/auth";
 import "../App.scss";
 
 function Layout({ carrito, usuario, setUsuario }) {
   const cerrarSesion = () => {
-    setUsuario(null);
+    setUsuario(null);   // limpia el estado en React
+    clearAuth();        // limpia token + usuario en localStorage
     toast.info("Sesión cerrada");
   };
+
+  const displayName = usuario?.nombre || usuario?.email || "Usuario";
 
   return (
     <div>
       <header>
         <h1>Hot Wheels Store</h1>
+
         <nav className="navbar">
+          {/* Lado izquierdo: links principales + login/usuario */}
           <div className="nav-left">
             <Link to="/">Productos</Link>
             <Link to="/blogs">Blogs</Link>
@@ -22,7 +28,7 @@ function Layout({ carrito, usuario, setUsuario }) {
 
             {usuario ? (
               <div className="usuario-info">
-                <span>{usuario.nombre}</span>
+                <span className="usuario-chip">{displayName}</span>
                 <button className="btn-cerrar" onClick={cerrarSesion}>
                   Cerrar sesión
                 </button>
@@ -35,10 +41,17 @@ function Layout({ carrito, usuario, setUsuario }) {
             )}
           </div>
 
+          {/* Lado derecho: admin (si corresponde) + carrito */}
           <div className="nav-right">
-            <Link to="/carrito">Carrito ({carrito.length})</Link>
-            {/* si quieres mostrar admin en el menú: */}
-            {/* <Link to="/admin">Admin</Link> */}
+            {usuario?.rol === "admin" && (
+              <Link to="/admin" className="nav-link">
+                Panel admin
+              </Link>
+            )}
+
+            <Link to="/carrito" className="carrito-link">
+              Carrito <span className="carrito-badge">{carrito.length}</span>
+            </Link>
           </div>
         </nav>
       </header>

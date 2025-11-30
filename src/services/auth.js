@@ -24,17 +24,21 @@ export async function signIn(email, password) {
     throw new Error("Credenciales inválidas");
   }
 
-  const data = await res.json(); // { token }
+  const data = await res.json(); // { token, usuario? }
   const payload = decodeToken(data.token); // { sub, role, exp, ... }
 
-  // Guardar token
-  localStorage.setItem("token", data.token);
+  // si el backend te devuelve usuario, lo usamos; si no, rellenamos con el token
+  const usuarioBackend = data.usuario || {};
 
-  // Guardar usuario básico
   const usuario = {
-    email: payload?.sub,
-    rol: payload?.role,
+    id: usuarioBackend.id ?? null,
+    nombre: usuarioBackend.nombre ?? "",       // 👈 clave: ahora SIEMPRE existe nombre
+    email: usuarioBackend.email ?? payload?.sub ?? email,
+    rol: usuarioBackend.rol ?? payload?.role ?? "cliente",
   };
+
+  // Guardar token y usuario
+  localStorage.setItem("token", data.token);
   localStorage.setItem("usuario", JSON.stringify(usuario));
 
   return { token: data.token, usuario };

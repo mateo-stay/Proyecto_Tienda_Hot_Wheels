@@ -9,6 +9,7 @@ const isTest = typeof process !== "undefined" && process.env.NODE_ENV === "test"
 export default function Login({ setUsuario }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cargando, setCargando] = useState(false);
 
   const navigate = useNavigate();
 
@@ -16,9 +17,14 @@ export default function Login({ setUsuario }) {
     e.preventDefault();
 
     try {
+      setCargando(true);
+
+      // signIn devuelve { token, usuario }
       const { usuario } = await signIn(email, password);
 
-      toast.success("Bienvenido 👋");
+      toast.success(
+        `Bienvenido, ${usuario.nombre || usuario.email} 👋`
+      );
 
       if (typeof setUsuario === "function") {
         setUsuario(usuario);
@@ -27,11 +33,20 @@ export default function Login({ setUsuario }) {
       setEmail("");
       setPassword("");
 
-      if (!isTest) navigate("/");
+      if (!isTest) {
+        // 👇 Redirección según rol
+        if (usuario.rol === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+      }
     } catch (err) {
       console.error(err);
       clearAuth();
-      toast.error("Email o contraseña incorrectos");
+      toast.error(err.message || "Email o contraseña incorrectos");
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -49,6 +64,7 @@ export default function Login({ setUsuario }) {
             placeholder="Correo electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={cargando}
           />
 
           <input
@@ -56,10 +72,11 @@ export default function Login({ setUsuario }) {
             placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={cargando}
           />
 
-          <button type="submit" className="login-btn">
-            Iniciar sesión
+          <button type="submit" className="login-btn" disabled={cargando}>
+            {cargando ? "Ingresando..." : "Iniciar sesión"}
           </button>
         </form>
 

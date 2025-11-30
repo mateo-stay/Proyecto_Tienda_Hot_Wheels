@@ -189,7 +189,7 @@ header h1 {
 main {
   flex: 1;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 1300px; /* un poquito más ancho */
   margin: auto;
   text-align: center;
 }
@@ -231,7 +231,7 @@ h3 {
 }
 
 /* ============================
-   CARDS / PRODUCTOS
+   CARDS / PRODUCTOS (GENÉRICO)
    ============================ */
 
 .productos-container {
@@ -291,9 +291,57 @@ h3 {
   background: #b80000;
 }
 
-/* Cabecera productos */
+/* ============================
+   CATÁLOGO DE PRODUCTOS (PRO)
+   ============================ */
 
-.productos-header {
+.productos-card {
+  max-width: 1400px;
+  margin: 10px auto 30px;
+  padding: 20px 28px 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+  text-align: left;
+}
+
+.productos-page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+  background: radial-gradient(
+    circle at top,
+    #f5f5f5 0%,
+    #f5f5f5 45%,
+    #f5f5f5 100%
+  );
+}
+
+.productos-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 34px 32px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
+  max-width: 1300px;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* zona de bienvenida dentro del catálogo */
+.productos-card #bienvenida {
+  margin-bottom: 14px;
+}
+
+.productos-card #bienvenida .login-title {
+  margin-bottom: 4px;
+}
+
+/* header de productos dentro del card */
+.productos-card .productos-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -303,6 +351,21 @@ h3 {
 .productos-resumen {
   font-size: 0.9rem;
   color: #555;
+}
+
+/* GRID responsivo para las cards */
+.productos-card .productos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* cada card ocupa su columna completa */
+.productos-card .producto-card {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
 }
 
 .producto-card h3 {
@@ -330,7 +393,7 @@ h3 {
 }
 
 @media (max-width: 600px) {
-  .productos-header {
+  .productos-card .productos-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
@@ -391,59 +454,119 @@ form button:hover {
   transform: scale(1.05);
 }
 
-/* ===== Contacto específico ===== */
+/* ============================
+   CONTACTO
+   ============================ */
 
 .contact-page {
   text-align: center;
-}
-
-.contact-form {
-  max-width: 480px;
-  margin: 20px auto;
-}
-
-.contact-section {
-  margin-top: 10px;
 }
 
 .contact-card {
   text-align: left;
 }
 
-.contact-card p {
-  font-size: 0.95rem;
+.contact-card .login-title {
   margin-bottom: 6px;
 }
 
-.contact-highlights {
-  margin-top: 8px;
-  text-align: left;
+.contact-card .login-subtitle {
+  margin-bottom: 16px;
 }
 
-.contact-highlights li {
-  margin-left: 18px;
-  margin-bottom: 4px;
+.contact-form {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-form label {
   font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-/* ===== Login específico ===== */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 8px;
+  border: 1px solid #d3d3d3;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #ff0000;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.15);
+}
+
+.contact-btn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.75;
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.25);
+  transform: none;
+}
+
+.contacto-btn {
+  margin-top: 6px;
+  background: linear-gradient(135deg, #ff0000, #ff0000);
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.98rem;
+  border: none;
+  padding: 11px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 6px 14px rgba(255, 0, 0, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.1s ease;
+}
+
+.contacto-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(255, 0, 0, 0.45);
+  filter: brightness(1.03);
+}
+
+.contacto-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(180, 0, 0, 0.4);
+}
+
+/* ============================
+   LOGIN
+   ============================ */
 
 .login-page {
-  min-height: calc(100vh - 140px); /* header + footer aprox */
+  min-height: calc(100vh - 140px);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 30px 15px;
-  background: radial-gradient(circle at top, #f5f5f5 0%, #f5f5f5 45%, #f5f5f5 100%);
+  background: radial-gradient(
+    circle at top,
+    #f5f5f5 0%,
+    #f5f5f5 45%,
+    #f5f5f5 100%
+  );
 }
 
 .login-card {
   position: relative;
   background: #ffffff;
   border-radius: 16px;
-  padding: 28px 34px 32px;
+  padding: 100px 34px 32px;
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
-  max-width: 420px;
+  max-width: 600px;
   width: 100%;
   text-align: center;
   overflow: hidden;
@@ -527,7 +650,7 @@ form button:hover {
   box-shadow: 0 4px 10px rgba(180, 0, 0, 0.4);
 }
 
-/* Texto de ayuda / acción secundaria */
+/* Texto extra */
 
 .login-extra {
   margin-top: 12px;
@@ -545,8 +668,6 @@ form button:hover {
   text-decoration: underline;
 }
 
-/* Responsive */
-
 @media (max-width: 480px) {
   .login-card {
     padding: 22px 20px 26px;
@@ -561,7 +682,6 @@ form button:hover {
     font-size: 0.9rem;
   }
 }
-
 
 /* ============================
    CARRITO
@@ -762,12 +882,142 @@ form button:hover {
   box-shadow: none;
 }
 
+/* Sidebar mejorada */
+.sidebar-title {
+  font-size: 1.3rem;
+  margin-bottom: 18px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-link {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(2px);
+}
+
+.sidebar-link.active {
+  background: #fff;
+  color: #ff0000;
+}
+
+/* Contenido admin con tarjetas */
+.admin-content {
+  flex-grow: 1;
+  padding: 30px 30px 40px;
+  background: #f5f5f5;
+}
+
+/* Tarjetas dentro del admin (form, tablas, etc.) */
+.admin-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 22px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+}
+
+.admin-card-title {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  color: #111;
+}
+
+.admin-card-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* Acciones del formulario */
+.admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Botón editar más pro */
+.btn-admin-editar {
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 4px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-admin-editar:hover {
+  background: #444;
+  transform: translateY(-1px);
+}
+
+
 /* ============================
    BLOGS
    ============================ */
 
 .blogs-page {
   text-align: left;
+}
+
+.blog-page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+  background: radial-gradient(
+    circle at top,
+    #f5f5f5 0%,
+    #f5f5f5 45%,
+    #f5f5f5 100%
+  );
+}
+
+.blog-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 34px 32px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+.blog-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 160%;
+  height: 8px;
+  background: linear-gradient(90deg, #ff0000, #ff9900, #ff0000);
 }
 
 .blogs-hero {
@@ -786,36 +1036,40 @@ form button:hover {
   margin-bottom: 4px;
 }
 
-.blogs-hero-badge {
+.blogs-card {
+  text-align: left;
+}
+
+.blogs-lista {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  font-size: 0.8rem;
+  gap: 12px;
 }
 
-.blogs-hero-badge span {
-  background: #000;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: bold;
+.blog-entry {
+  background: #fdfdfd;
+  border-radius: 10px;
+  padding: 10px 12px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.blogs-hero-badge small {
-  color: #333;
+.blog-entry h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
 }
 
-.blog-card {
-  text-align: left;
+.blog-entry p {
+  font-size: 0.9rem;
+  color: #444;
 }
 
 .blog-meta {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   font-size: 0.75rem;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .blog-tag {
@@ -825,27 +1079,7 @@ form button:hover {
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
-.blog-date {
-  color: #777;
-}
-
-.blog-btn {
-  margin-top: 10px;
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  cursor: default;
-  opacity: 0.8;
-}
-
-.blog-btn:disabled {
-  cursor: not-allowed;
+  font-weight: 600;
 }
 
 /* ============================
@@ -902,7 +1136,6 @@ form button:hover {
   color: #444;
 }
 
-
 /* ============================
    FOOTER
    ============================ */
@@ -941,16 +1174,10 @@ footer {
     text-align: center;
   }
 
-  .blogs-hero,
-  .nosotros-hero {
+  .blogs-hero {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-  }
-
-  .blogs-hero-badge,
-  .nosotros-badge {
-    align-items: flex-start;
   }
 }
 
@@ -972,115 +1199,4 @@ footer {
     font-size: 1.2rem;
     margin: 0.2rem 0;
   }
-}
-
-/* ============================
-   CONTACTO
-   ============================ */
-
-.contact-card {
-  text-align: left;
-}
-
-.contact-card .login-title {
-  margin-bottom: 6px;
-}
-
-.contact-card .login-subtitle {
-  margin-bottom: 16px;
-}
-
-/* Formulario */
-
-.contact-form {
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.contact-form label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  padding: 10px 11px;
-  border-radius: 8px;
-  border: 1px solid #d3d3d3;
-  font-size: 0.95rem;
-  resize: vertical;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-  border-color: #ff0000;
-  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.15);
-}
-
-/* Botón (usa base de .login-btn) */
-
-.contact-btn[disabled] {
-  cursor: not-allowed;
-  opacity: 0.75;
-  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.25);
-  transform: none;
-}
-
-/* ====== BLOGS ====== */
-
-.blogs-card {
-  text-align: left;
-}
-
-.blogs-lista {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.blog-entry {
-  background: #fdfdfd;
-  border-radius: 10px;
-  padding: 10px 12px 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.blog-entry h3 {
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.blog-entry p {
-  font-size: 0.9rem;
-  color: #444;
-}
-
-/* meta / tag */
-
-.blog-meta {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: 0.75rem;
-  margin-bottom: 4px;
-}
-
-.blog-tag {
-  background: #ff0000;
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
 }

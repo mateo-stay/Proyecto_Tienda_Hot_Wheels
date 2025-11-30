@@ -1,15 +1,12 @@
 // src/App.jsx
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.scss";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Layout principal
 import Layout from "./layouts/Layout";
-
-// Páginas
 import Producto from "./pages/Producto";
 import Carrito from "./pages/Carrito";
 import Login from "./pages/Login";
@@ -19,8 +16,19 @@ import Contacto from "./pages/Contacto";
 import Nosotros from "./pages/Nosotros";
 import Admin from "./pages/Admin";
 
-// Servicio para traer los productos desde el backend
 import { getProductos } from "./services/api";
+import { getCurrentUser } from "./services/auth";
+
+// 👇 Ruta protegida solo para admin
+function AdminRoute({ usuario, children }) {
+  if (!usuario) {
+    return <Navigate to="/login" replace />;
+  }
+  if (usuario.rol !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
 
 function App() {
   const [productos, setProductos] = useState([]);
@@ -31,10 +39,15 @@ function App() {
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
+    const user = getCurrentUser();
+    if (user) setUsuario(user);
+  }, []);
+
+  useEffect(() => {
     const fetchProductos = async () => {
       try {
         const data = await getProductos();
-        setProductos(data); // ajusta si tu API devuelve otra estructura
+        setProductos(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error al cargar productos:", error);
         setErrorProductos("Ocurrió un error al cargar los productos.");
@@ -49,11 +62,7 @@ function App() {
   const agregarAlCarrito = (nombre, precio) => {
     setCarrito((prev) => [
       ...prev,
-      {
-        id: Date.now(),
-        nombre,
-        precio,
-      },
+      { id: Date.now(), nombre, precio },
     ]);
     toast.success(`${nombre} agregado al carrito`);
   };
@@ -70,7 +79,6 @@ function App() {
             />
           }
         >
-          {/* Productos en "/" */}
           <Route
             path="/"
             element={
@@ -83,7 +91,6 @@ function App() {
             }
           />
 
-          {/* Misma vista en /producto (opcional) */}
           <Route
             path="/producto"
             element={
@@ -96,25 +103,27 @@ function App() {
             }
           />
 
-          {/* Carrito */}
           <Route
             path="/carrito"
-            element={
-              <Carrito carrito={carrito} setCarrito={setCarrito} />
-            }
+            element={<Carrito carrito={carrito} setCarrito={setCarrito} />}
           />
 
-          {/* Login y registro */}
           <Route path="/login" element={<Login setUsuario={setUsuario} />} />
           <Route path="/registro" element={<Registro />} />
 
-          {/* Otras páginas */}
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/nosotros" element={<Nosotros />} />
 
-          {/* Admin (simple, sin protección por ahora) */}
-          <Route path="/admin" element={<Admin />} />
+          {/* 👇 Ruta protegida solo admin */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute usuario={usuario}>
+                <Admin />
+              </AdminRoute>
+            }
+          />
         </Route>
       </Routes>
 

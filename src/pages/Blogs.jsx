@@ -3,8 +3,8 @@ import React from "react";
 
 export default function Blogs() {
   return (
-    <main className="login-page">
-      <div className="login-card blogs-card">
+    <main className="blog-page">
+      <div className="blog-card blogs-card">
         <h2 className="login-title">Blog Hot Wheels Store</h2>
         <p className="login-subtitle">
           Tips rápidos, ideas y noticias para llevar tu colección al siguiente nivel.

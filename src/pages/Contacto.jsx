@@ -8,7 +8,7 @@ export default function Contacto() {
         <h2 className="login-title">Contacto</h2>
         <p className="login-subtitle">
           ¿Tienes dudas sobre pedidos, productos o tu colección Hot Wheels?
-          Escríbenos y te responderemos a la brevedad (formulario solo demo).
+          Escríbenos y te responderemos a la brevedad.
         </p>
 
         <form className="contact-form">
@@ -32,7 +32,7 @@ export default function Contacto() {
 
           <button
             type="submit"
-            className="login-btn contact-btn"
+            className="contacto-btn contact-btn"
             disabled
           >
             Enviar mensaje

@@ -146,3 +146,79 @@ export async function loginUsuario(credentials) {
 
   return await res.json(); // normalmente: { access_token, token_type, usuario... }
 }
+
+/* ============================
+ *        USUARIOS (ADMIN)
+ * ============================ */
+
+// GET /api/usuarios  (requiere token de admin)
+export async function getUsuarios(rol) {
+  let url = `${API_URL}/usuarios`;
+  if (rol) {
+    url += `?rol=${encodeURIComponent(rol)}`;
+  }
+
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+  });
+
+  if (!res.ok) {
+    let mensaje = "Error al obtener usuarios";
+    try {
+      const body = await res.json();
+      if (body.detail) mensaje = body.detail;
+    } catch (_e) {}
+    throw new Error(mensaje);
+  }
+
+  return await res.json();
+}
+
+// DELETE /api/usuarios/{id}  (requiere token de admin)
+export async function deleteUsuario(id) {
+  const url = `${API_URL}/usuarios/${id}`;
+
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      ...authHeaders(),
+    },
+  });
+
+  if (!res.ok) {
+    let mensaje = "Error al eliminar usuario";
+    try {
+      const body = await res.json();
+      if (body.detail) mensaje = body.detail;
+    } catch (_e) {}
+    throw new Error(mensaje);
+  }
+}
+
+// PUT /api/usuarios/{id}  (requiere token de admin)
+export async function updateUsuario(id, data) {
+  const url = `${API_URL}/usuarios/${id}`;
+
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    let mensaje = "Error al actualizar usuario";
+    try {
+      const body = await res.json();
+      if (body.detail) mensaje = body.detail;
+    } catch (_e) {}
+    throw new Error(mensaje);
+  }
+
+  return await res.json();
+}

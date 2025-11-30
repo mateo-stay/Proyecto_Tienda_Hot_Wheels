@@ -16,13 +16,10 @@ export default function Login({ setUsuario }) {
     e.preventDefault();
 
     try {
-      // llama a la API, guarda token y usuario en localStorage
       const { usuario } = await signIn(email, password);
-      // usuario viene algo como: { email, rol, nombre }
 
       toast.success("Bienvenido 👋");
 
-      // ✅ Solo lo usamos si realmente vino desde App
       if (typeof setUsuario === "function") {
         setUsuario(usuario);
       }
@@ -40,25 +37,36 @@ export default function Login({ setUsuario }) {
 
   return (
     <main className="login-page">
-      <h2>Inicio de sesión</h2>
+      <div className="login-card">
+        <h2 className="login-title">Inicio de sesión</h2>
+        <p className="login-subtitle">
+          Ingresa con tu cuenta para seguir armando tu colección Hot Wheels.
+        </p>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button type="submit">Iniciar sesión</button>
-      </form>
+          <button type="submit" className="login-btn">
+            Iniciar sesión
+          </button>
+        </form>
+
+        <p className="login-extra">
+          ¿No tienes cuenta aún? <a href="/registro">Regístrate aquí</a>
+        </p>
+      </div>
     </main>
   );
 }

@@ -50,37 +50,52 @@ export default function Registro() {
   };
 
   return (
-    <main className="registro-page">
-      <h2>Registro</h2>
-      <form onSubmit={handleRegistro}>
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={form.nombre}
-          onChange={handleChange}
-          disabled={cargando}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Correo"
-          value={form.email}
-          onChange={handleChange}
-          disabled={cargando}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={form.password}
-          onChange={handleChange}
-          disabled={cargando}
-        />
-        <button type="submit" disabled={cargando}>
-          {cargando ? "Registrando..." : "Registrarse"}
-        </button>
-      </form>
+    <main className="login-page">
+      <div className="login-card">
+        <h2 className="login-title">Crear cuenta</h2>
+        <p className="login-subtitle">
+          Regístrate para guardar tu usuario y seguir comprando tus Hot Wheels favoritos.
+        </p>
+
+        <form onSubmit={handleRegistro}>
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Nombre"
+            value={form.nombre}
+            onChange={handleChange}
+            disabled={cargando}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo"
+            value={form.email}
+            onChange={handleChange}
+            disabled={cargando}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={form.password}
+            onChange={handleChange}
+            disabled={cargando}
+          />
+
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={cargando}
+          >
+            {cargando ? "Registrando..." : "Registrarse"}
+          </button>
+        </form>
+
+        <p className="login-extra">
+          ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
+        </p>
+      </div>
     </main>
   );
 }

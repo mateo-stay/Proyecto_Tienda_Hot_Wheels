@@ -23,7 +23,7 @@ export default function Login({ setUsuario }) {
       const { usuario } = await signIn(email, password);
 
       toast.success(
-        `Bienvenido, ${usuario.nombre || usuario.email} 👋`
+        `Bienvenido, ${usuario.nombre} 👋`
       );
 
       if (typeof setUsuario === "function") {
